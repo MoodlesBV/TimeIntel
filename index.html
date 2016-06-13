@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time intel jQuery plugin</title>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="js/jquery.time-intel.js"></script>
+</head>
+<body>
+    <div class="time-intel test1">Ik heb vandaag 1 uur gewerkt aan uren & ritten.</div>
+    <div class="time-intel test2">Van 09:00 tot 12:00 heb ik gewerkt aan Ezbizniz.</div>
+    <div class="time-intel test3">Vandaag 00:30 minuten lunch gehad.</div>
+</body>
+</html>
+
+<script>
+    var options = {
+        locale: 'nl'
+    };
+
+    $(function() {
+        $('.time-intel').timeIntel(options);
+        console.log($('.time-intel').timeIntel('get', 'locale'));
+    });
+</script>
