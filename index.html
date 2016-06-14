@@ -2,24 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Time intel jQuery plugin</title>
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="js/jquery.time-intel.js"></script>
+    <title>TimeIntel plugin</title>
 </head>
 <body>
-    <div class="time-intel test1">Ik heb vandaag 1 uur gewerkt aan uren & ritten.</div>
-    <div class="time-intel test2">Van 09:00 tot 12:00 heb ik gewerkt aan Ezbizniz.</div>
-    <div class="time-intel test3">Vandaag 00:30 minuten lunch gehad.</div>
+    <div class="time-intel test1">Van 12:00 uur tot 15:00 uur</div>
+    <div class="time-intel test3">Van 12:00 uur tot 15:00</div>
+    <div class="time-intel test1">Van 12:00 tot 15:00 uur</div>
+    <div class="time-intel test1">Van 12:00 tot 15:00</div>
+    <div class="time-intel test2">van 12 uur tot 15 uur</div>
+    <div class="time-intel test4">van 12 uur tot 15</div>
+    <div class="time-intel test4">van 12 tot 15 uur</div>
+    <div class="time-intel test5">Van 12 tot 15</div>
+    <div class="time-intel test6"></div>
+    <div class="time-intel test7"></div>
+    <div class="time-intel test8"></div>
+    <div class="time-intel test9"></div>
+    <div class="time-intel test10"></div>
+    <div class="time-intel test11"></div>
+    <div class="time-intel test12"></div>
+
+    <!-- Scripts -->
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="js/time-intel.js"></script>
+    <script src="js/locale/nl.js"></script>
+    <script>
+        var intelClasses = new TimeIntel('.time-intel', { locale: 'nl' });
+
+        $(function() {
+            console.log(intelClasses.times());
+        });
+    </script>
 </body>
 </html>
 
-<script>
-    var options = {
-        locale: 'nl'
-    };
-
-    $(function() {
-        $('.time-intel').timeIntel(options);
-        console.log($('.time-intel').timeIntel('get', 'locale'));
-    });
-</script>
