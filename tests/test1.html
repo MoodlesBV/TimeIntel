@@ -16,6 +16,8 @@
     <div class="time-intel" data-id="test9">Ik heb 8 uur gewerkt</div>
     <div class="time-intel" data-id="test10">Ik heb gewerkt</div>
     <div class="time-intel" data-id="test11">Ik heb 10 gewerkt</div>
+    <div class="time-intel" data-id="test11">Ik heb 15 minuten gewerkt</div>
+    <div class="time-intel" data-id="test11">Ik heb anderhalf uur gewerkt</div>
 
     <!-- Scripts -->
     <script src="../bower_components/moment/moment.js"></script>
@@ -24,7 +26,10 @@
     <script>
         var intelClasses = new TimeIntel('.time-intel', { lang: 'nl' });
 
-        console.log(intelClasses.times());
+        console.log(intelClasses.format());
+
+        // TODO: Integrate this feature in the plugin.
+        console.log(moment('12 minutes', 'mm').format('HH:mm'));
     </script>
 </body>
 </html>
