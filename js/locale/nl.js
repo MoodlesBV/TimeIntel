@@ -12,11 +12,12 @@ var locale = {
         "duration": {
             "priority": 2,
             "keywords": {
-                "hours"      : ["uren", "uur", "u"],
-                "half-hours" : ["halve uren", "half uur", "halfuur"],
-                "quarter"    : ["kwartieren", "kwartier"],
-                "minutes"    : ["minuten", "minuut", "min", "m"],
-                "seconds"    : ["seconden", "secondes", "seconde", "sec", "s"]
+                "hours"               : ["uren", "uur", "u"],
+                "one-and-a-half-hour" : ["anderhalve uren", "anderhalf uur"],
+                "half-hours"          : ["halve uren", "half uur", "halfuur"],
+                "quarter"             : ["kwartieren", "kwartier"],
+                "minutes"             : ["minuten", "minuut", "min", "m"],
+                "seconds"             : ["seconden", "secondes", "seconde", "sec", "s"]
             }
         }
     }

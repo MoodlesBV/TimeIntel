@@ -74,51 +74,78 @@ TimeIntel.prototype.times = function() {
 };
 
 TimeIntel.prototype.regex = function(index, time) {
-    var combine  = this.prepRegex(locale.combine);
+    var combine  = '(' + this.prepRegex(locale.combine) + ')';
 
     var keywordsArray = [],
         regex;
 
     for (var j in time.keywords) {
-        keywordsArray.push(this.prepRegex(time.keywords[j]));
+        keywordsArray.push('(' + this.prepRegex(time.keywords[j]) + ')');
     }
 
     var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
 
     if (index === 'periods') {
-        regex = '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
-                '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
-                '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+)|' +
-                '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
-                '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
-                '(\\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
-                '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
-                '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
-                '(' + keywords + '\\ \\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
-                '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+)|' +
-                '(' + keywords + '\\ \\d+\\ ' + combine + '\\ \\d+)|' +
-                '(\\d+\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
-                '(\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
-                '(\\d+\\ ' + combine + '\\ \\d+)|';
+        regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
+                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+)|' +
+                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+\\d+)|' +
+                '(\\d+\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
+                '(\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
+                '(\\d+\\s+' + combine + '\\s+\\d+)|';
     } else {
-        regex = '(\\d+:\\d+\\ ' + keywords + ')|' +
-                '(' + keywords + '\\ \\d+:\\d+)|' +
+        regex = '(\\d+:\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+:\\d+)|' +
                 '(\\d+:\\d+)|' +
-                '(\\d+\\ ' + keywords + ')|' +
-                '(' + keywords + '\\ \\d+)|' +
+                '(\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+)|' +
                 '(\\d+)|' +
                 keywords + '|';
     }
 
-    return regex.slice(0, -1);
+    return new RegExp(regex.slice(0, -1), 'gi');
 };
 
-TimeIntel.prototype.duration = function(value) {
-    return value;
+TimeIntel.prototype.format = function() {
+    var elements     = this.elements(),
+        times        = this.times(),
+        combineRegex = new RegExp('\\s+(?:' + this.prepRegex(locale.combine) + ')\\s+'),
+        tmp = [];
+
+    for (var i = 0; i < times.length; i++) {
+        var cont = true;
+
+        if (times[i] === null || typeof times[i] === 'undefined') {
+            cont = false;
+            tmp[i] = null;
+        }
+
+        if (cont) {
+            // If regex succeeds, this means we can calculate the difference.
+            // Else, it's just a time format.
+            if (combineRegex.test(times[i])) {
+                var asdf = times[i].split(combineRegex);
+
+                console.log(asdf, asdf.map(function(a) { return moment(a, 'HH:mm').format('HH:mm'); }));
+            } else {
+                console.log(times[i], moment(times[i], 'HH:mm').format('HH:mm'));
+            }
+            // console.log(times[i], combineRegex.test(times[i]), times[i] === null ? null : times[i].split(combineRegex));
+        }
+    }
+
+    return tmp;
 };
 
 TimeIntel.prototype.prepRegex = function(input) {
-    return '(' + input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/ /g, '\\ ').replace(/-/g, '\\-') + ')';
+    return input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-');
 };
 
 TimeIntel.prototype.sortLocaleByPriority = function() {
