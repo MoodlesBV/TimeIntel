@@ -1,5 +1,3 @@
-var churn = false;
-
 window.TimeIntel = function(selector, options) {
     'use strict';
 
@@ -33,8 +31,6 @@ window.TimeIntel = function(selector, options) {
     }
 
     moment.locale(this.options.locale);
-
-    churn = true;
 };
 
 TimeIntel.prototype.elements = function() {
@@ -47,7 +43,7 @@ TimeIntel.prototype.elements = function() {
 
 TimeIntel.prototype.values = function() {
     var elements = this.elements(),
-        values = [];
+        values   = [];
 
     for (var i = 0; i < elements.length; i++) {
         values.push(elements[i].value || elements[i].innerHTML);
