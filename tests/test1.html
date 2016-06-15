@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TimeIntel plugin</title>
+</head>
+<body>
+    <div class="time-intel" data-id="test1">Van 12:00 uur tot 15:00 uur</div>
+    <div class="time-intel" data-id="test2">Van 12:00 uur tot 15:00</div>
+    <div class="time-intel" data-id="test3">Van 12:00 tot 15:00 uur</div>
+    <div class="time-intel" data-id="test4">Van 12:00 tot 15:00</div>
+    <div class="time-intel" data-id="test5">van 12 uur tot 15 uur</div>
+    <div class="time-intel" data-id="test6">van 12 uur tot 15</div>
+    <div class="time-intel" data-id="test7">van 12 tot 15 uur</div>
+    <div class="time-intel" data-id="test8">Van 12 tot 15</div>
+    <div class="time-intel" data-id="test9">Ik heb 3 uur gewerkt</div>
+    <div class="time-intel" data-id="test10"></div>
+    <div class="time-intel" data-id="test11"></div>
+    <div class="time-intel" data-id="test12"></div>
+    <div class="time-intel" data-id="test13"></div>
+    <div class="time-intel" data-id="test14"></div>
+    <div class="time-intel" data-id="test15"></div>
+
+    <!-- Scripts -->
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../js/time-intel.js"></script>
+    <script src="../js/locale/nl.js"></script>
+    <script>
+        var intelClasses = new TimeIntel('.time-intel', { lang: 'nl' });
+
+        console.log(intelClasses.times());
+    </script>
+</body>
+</html>
+

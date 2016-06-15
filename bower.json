@@ -2,7 +2,7 @@
   "name": "time-intel",
   "homepage": "https://github.com/AuditeMarlow/TimeIntel",
   "description": "",
-  "main": "",
+  "main": "js/time-intel.js",
   "moduleType": [],
   "authors": [
     "Niek den Breeje <n.j.den.breeje@gmail.com>"
@@ -16,7 +16,6 @@
     "tests"
   ],
   "dependencies": {
-    "moment": "^2.13.0",
-    "jquery": "^3.0.0"
+    "moment": "^2.13.0"
   }
 }
