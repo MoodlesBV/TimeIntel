@@ -59,102 +59,62 @@ TimeIntel.prototype.values = function() {
 TimeIntel.prototype.times = function() {
     this.sortLocaleByPriority();
 
-    var combine  = this.prepRegex(locale.combine),
-        time     = locale.time;
+    var times = [];
 
-    for (var i in time) {
-        var keywordsArray = [],
-            regex;
+    for (var i in locale.time) {
+        var values = this.values(),
+            regex  = this.regex(i, locale.time[i]);
 
-        for (var j in time[i].keywords) {
-            keywordsArray.push(this.prepRegex(time[i].keywords[j]));
-        }
+        for (var j = 0; j < values.length; j++) {
+            times[j] = times[j] || null;
 
-        var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
-
-        if (i === 'periods') {
-            regex = '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
-                    '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
-                    '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+)|' +
-                    '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
-                    '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
-                    '(\\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
-                    '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
-                    '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
-                    '(' + keywords + '\\ \\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
-                    '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+)|' +
-                    '(' + keywords + '\\ \\d+\\ ' + combine + '\\ \\d+)|' +
-                    '(\\d+\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
-                    '(\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
-                    '(\\d+\\ ' + combine + '\\ \\d+)|';
-        } else {
-            regex = '(\\d+:\\d+\\ ' + keywords + ')|' +
-                    '(' + keywords + '\\ \\d+:\\d+)|' +
-                    '(\\d+:\\d+)|' +
-                    '(\\d+\\ ' + keywords + ')|' +
-                    '(' + keywords + '\\ \\d+)|' +
-                    '(\\d+)|' +
-                    keywords + '|';
-        }
-
-        console.log(regex.slice(0, -1));
-    }
-
-    /*for (var i in time) {
-        var keywords = time[i].keywords;
-
-        for (var j in keywords) {
-            var keyword = this.prepRegex(keywords[j]);
-
-            console.log(keyword);
-
-            if (i === 'periods') {
-                regex += '(\\d+:\\d+\\ ' + keyword + '\\ ' + combine + '\\ \\d+:\\d+\\ ' + keyword + ')|'+
-                         '(\\d+:\\d+\\ ' + keyword + '\\ ' + combine + '\\ \\d+:\\d+)|'+
-                         '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+\\ ' + keyword + ')|'+
-                         '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|'+
-                         '(\\d+\\ ' + keyword + '\\ ' + combine + '\\ \\d+\\ ' + keyword + ')|'+
-                         '(\\d+\\ ' + keyword + '\\ ' + combine + '\\ \\d+)|'+
-                         '(\\d+\\ ' + combine + '\\ \\d+\\ ' + keyword + ')|'+
-                         '(\\d+\\ ' + combine + '\\ \\d+)|';
-            } else {
-                regex += '(\\d+:\\d+\\ ' + keyword + ')|'+
-                         '(' + keyword + '\\ \\d+:\\d+)|'+
-                         '(\\d+:\\d+)|'+
-                         '(\\d+\\ ' + keyword + ')|'+
-                         '(' + keyword + '\\ \\d+)|'+
-                         '(\\d+)|'+
-                         keyword + '|' + "\r\n";
+            if (values[j].match(regex) !== null && times[j] === null) {
+                times[j] = values[j].match(regex)[0];
             }
         }
-
-        console.log(regex.slice(0, -1));
-
-        regex = new RegExp(regex.slice(0, -1), 'g');
-    }*/
-
-    /*var lang  = this.lang,
-        hour  = this.prepRegex(lang.hour),
-        to    = this.prepRegex(lang.to),
-        regex = '(\\d+:\\d+\\ ' + hour + '\\ ' + to + '\\ \\d+:\\d+\\ ' + hour + ')|'+
-                '(\\d+:\\d+\\ ' + hour + '\\ ' + to + '\\ \\d+:\\d+)|'+
-                '(\\d+:\\d+\\ ' + to + '\\ \\d+:\\d+\\ ' + hour + ')|'+
-                '(\\d+:\\d+\\ ' + to + '\\ \\d+:\\d+)|'+
-                '(\\d+\\ ' + hour + '\\ ' + to + '\\ \\d+\\ ' + hour + ')|'+
-                '(\\d+\\ ' + hour + '\\ ' + to + '\\ \\d+)|'+
-                '(\\d+\\ ' + to + '\\ \\d+\\ ' + hour + ')|'+
-                '(\\d+\\ ' + to + '\\ \\d+)',
-        regexp = new RegExp(regex, 'g'),
-        values = this.values(),
-        times  = [];
-
-    console.log(regex);
-
-    for (var i = 0; i < values.length; i++) {
-        times.push(values[i].match(regexp));
     }
 
-    return times;*/
+    return times;
+};
+
+TimeIntel.prototype.regex = function(index, time) {
+    var combine  = this.prepRegex(locale.combine);
+
+    var keywordsArray = [],
+        regex;
+
+    for (var j in time.keywords) {
+        keywordsArray.push(this.prepRegex(time.keywords[j]));
+    }
+
+    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
+
+    if (index === 'periods') {
+        regex = '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
+                '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
+                '(\\d+:\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+:\\d+)|' +
+                '(' + keywords + '\\ \\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
+                '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+\\ ' + keywords + ')|' +
+                '(\\d+:\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+:\\d+)|' +
+                '(\\d+:\\d+\\ ' + combine + '\\ \\d+:\\d+)|' +
+                '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
+                '(' + keywords + '\\ \\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
+                '(\\d+\\ ' + keywords + '\\ ' + combine + '\\ \\d+)|' +
+                '(' + keywords + '\\ \\d+\\ ' + combine + '\\ \\d+)|' +
+                '(\\d+\\ ' + combine + '\\ \\d+\\ ' + keywords + ')|' +
+                '(\\d+\\ ' + combine + '\\ ' + keywords + '\\ \\d+)|' +
+                '(\\d+\\ ' + combine + '\\ \\d+)|';
+    } else {
+        regex = '(\\d+:\\d+\\ ' + keywords + ')|' +
+                '(' + keywords + '\\ \\d+:\\d+)|' +
+                '(\\d+:\\d+)|' +
+                '(\\d+\\ ' + keywords + ')|' +
+                '(' + keywords + '\\ \\d+)|' +
+                '(\\d+)|' +
+                keywords + '|';
+    }
+
+    return regex.slice(0, -1);
 };
 
 TimeIntel.prototype.duration = function(value) {
