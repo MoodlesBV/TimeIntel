@@ -4,16 +4,19 @@ var locale = {
         "periods": {
             "priority": 1,
             "keywords": {
-                "hours": ["uur", "uren"]
+                "hours"   : ["uren", "uur", "u"],
+                "minutes" : ["minuten", "minuut", "min", "m"],
+                "seconds" : ["seconden", "secondes", "seconde", "sec", "s"]
             }
         },
         "duration": {
             "priority": 2,
             "keywords": {
-                "hours"      : ["uur", "uren"],
-                "half-hours" : ["half uur", "halfuur", "halve uren"],
-                "quarter"    : ["kwartier", "kwartieren"],
-                "minutes"    : ["minuut", "minuten"]
+                "hours"      : ["uren", "uur", "u"],
+                "half-hours" : ["halve uren", "half uur", "halfuur"],
+                "quarter"    : ["kwartieren", "kwartier"],
+                "minutes"    : ["minuten", "minuut", "min", "m"],
+                "seconds"    : ["seconden", "secondes", "seconde", "sec", "s"]
             }
         }
     }

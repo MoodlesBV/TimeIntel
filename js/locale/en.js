@@ -4,16 +4,19 @@ var locale = {
         "periods": {
             "priority": 1,
             "keywords": {
-                "hours": ["o'clock", "hour", "hours"]
+                "hours"   : ["hours", "o'clock", "hour", "h"],
+                "minutes" : ["minutes", "minute", "min", "m"],
+                "seconds" : ["seconds", "second", "sec", "s"]
             }
         },
         "duration": {
             "priority": 2,
             "keywords": {
-                "hours"      : ["hour", "hours"],
-                "half-hours" : ["half an hour", "half hour", "half hours", "halfhour"],
-                "quarter"    : ["quarter", "quarters"],
-                "minutes"    : ["minute", "minutes"]
+                "hours"      : ["hour", "hours", "h"],
+                "half-hours" : ["half hours", "half an hour", "half hour", "halfhour"],
+                "quarter"    : ["quarters", "quarter"],
+                "minutes"    : ["minutes", "minute", "min", "m"],
+                "seconds"    : ["seconds", "second", "sec", "s"]
             }
         }
     }
