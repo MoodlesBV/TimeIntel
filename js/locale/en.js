@@ -16,6 +16,10 @@ var locale = {
                     "keywords": ["hours", "o'clock", "hour", "h"],
                     "multiply": 3600
                 },
+                "days": {
+                    "keywords": ["day", "days"],
+                    "multiply": 28800 // Technically 8 hours
+                }
             }
         },
         "duration": {
@@ -42,9 +46,13 @@ var locale = {
                     "multiply": 3600
                 },
                 "one-and-a-half-hour": {
-                    "keywords": ["one and a half hour"],
+                    "keywords": ["one and a half hour", "one and a half"],
                     "multiply": 5400
                 },
+                "days": {
+                    "keywords": ["day", "days"],
+                    "multiply": 28800 // Technically 8 hours
+                }
             }
         }
     }
