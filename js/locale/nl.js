@@ -3,21 +3,48 @@ var locale = {
     "time": {
         "periods": {
             "priority": 1,
-            "keywords": {
-                "hours"   : ["uren", "uur", "u"],
-                "minutes" : ["minuten", "minuut", "min", "m"],
-                "seconds" : ["seconden", "secondes", "seconde", "sec", "s"]
+            "props": {
+                "seconds": {
+                    "keywords": ["seconden", "secondes", "seconde", "sec", "s"],
+                    "multiply": 1
+                },
+                "minutes": {
+                    "keywords": ["minuten", "minuut", "min", "m"],
+                    "multiply": 60
+                },
+                "hours": {
+                    "keywords": ["uren", "uur", "u"],
+                    "multiply": 3600
+                },
             }
         },
         "duration": {
             "priority": 2,
-            "keywords": {
-                "hours"               : ["uren", "uur", "u"],
-                "one-and-a-half-hour" : ["anderhalve uren", "anderhalf uur"],
-                "half-hours"          : ["halve uren", "half uur", "halfuur"],
-                "quarter"             : ["kwartieren", "kwartier"],
-                "minutes"             : ["minuten", "minuut", "min", "m"],
-                "seconds"             : ["seconden", "secondes", "seconde", "sec", "s"]
+            "props": {
+                "seconds": {
+                    "keywords": ["seconden", "secondes", "seconde", "sec", "s"],
+                    "multiply": 1
+                },
+                "minutes": {
+                    "keywords": ["minuten", "minuut", "min", "m"],
+                    "multiply": 60
+                },
+                "quarter": {
+                    "keywords": ["kwartieren", "kwartier"],
+                    "multiply": 900
+                },
+                "half-hours": {
+                    "keywords": ["halve uren", "half uur", "halfuur"],
+                    "multiply": 1800
+                },
+                "hours": {
+                    "keywords": ["uren", "uur", "u"],
+                    "multiply": 3600
+                },
+                "one-and-a-half-hour": {
+                    "keywords": ["anderhalve uren", "anderhalf uur"],
+                    "multiply": 5400
+                },
             }
         }
     }

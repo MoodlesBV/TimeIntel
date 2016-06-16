@@ -5,19 +5,19 @@
     <title>TimeIntel plugin</title>
 </head>
 <body>
-    0<div class="time-intel" data-id="test1">Van 9:00 uur tot 10:00 uur</div>
-    1<div class="time-intel" data-id="test2">Van 10:00 uur tot 11:00</div>
-    2<div class="time-intel" data-id="test3">Van 11:00 tot 12:00 uur</div>
-    3<div class="time-intel" data-id="test4">Van 12:00 tot 13:00</div>
-    4<div class="time-intel" data-id="test5">van 13 uur tot 14 uur</div>
-    5<div class="time-intel" data-id="test6">van 14 uur tot 15</div>
-    6<div class="time-intel" data-id="test7">van 15 tot 16 uur</div>
-    7<div class="time-intel" data-id="test8">Van 16 tot 17</div>
-    8<div class="time-intel" data-id="test9">Ik heb 8 uur gewerkt</div>
-    9<div class="time-intel" data-id="test10">Ik heb gewerkt</div>
-    10<div class="time-intel" data-id="test11">Ik heb 10 gewerkt</div>
-    11<div class="time-intel" data-id="test11">Ik heb 15 minuten gewerkt</div>
-    12<div class="time-intel" data-id="test11">Ik heb anderhalf uur gewerkt</div>
+    <div>0: <span class="time-intel" data-id="test1">Van 9:00 uur tot 10:00 uur</span></div>
+    <div>1: <span class="time-intel" data-id="test2">Van 10:00 uur tot 11:00</span></div>
+    <div>2: <span class="time-intel" data-id="test3">Van 11:00 tot 12:00 uur</span></div>
+    <div>3: <span class="time-intel" data-id="test4">Van 12:00 tot 13:00</span></div>
+    <div>4: <span class="time-intel" data-id="test5">van 13 uur tot 14 uur</span></div>
+    <div>5: <span class="time-intel" data-id="test6">van 14 uur tot 15</span></div>
+    <div>6: <span class="time-intel" data-id="test7">van 15 tot 16 uur</span></div>
+    <div>7: <span class="time-intel" data-id="test8">Van 16 tot 17</span></div>
+    <div>8: <span class="time-intel" data-id="test9">Ik heb 8 uur gewerkt</span></div>
+    <div>9: <span class="time-intel" data-id="test10">Ik heb gewerkt</span></div>
+    <div>10: <span class="time-intel" data-id="test11">Ik heb 10 gewerkt</span></div>
+    <div>11: <span class="time-intel" data-id="test11">Ik heb 15 minuten gewerkt</span></div>
+    <div>12: <span class="time-intel" data-id="test11">Ik heb anderhalf uur gewerkt</span></div>
 
     <!-- Scripts -->
     <script src="../bower_components/moment/moment.js"></script>
@@ -26,6 +26,10 @@
     <script>
         var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
+        // console.log(timeIntel.elements());
+        // console.log(timeIntel.values());
+        // console.log(timeIntel.timeString());
+        // console.log(timeIntel.times());
         console.log(timeIntel.format('h'));
     </script>
 </body>
