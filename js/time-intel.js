@@ -180,9 +180,14 @@ TimeIntel.prototype.sortLocaleByPriority = function() {
 };
 
 TimeIntel.prototype.getFormattedPeriod = function(times, format) {
-    var start = times[0],
-        end   = times[1],
-        total = moment.duration(moment(end, 'HH:mm').diff(moment(start, 'HH:mm'))).asSeconds();
+    var start = moment(times[0], 'HH:mm'),
+        end   = moment(times[1], 'HH:mm');
+
+    if (start.diff(end) > 0) {
+        end.add(12, 'h');
+    }
+
+    var total = moment.duration(end.diff(start)).asSeconds();
 
     return this.calculate(total, format);
 };
