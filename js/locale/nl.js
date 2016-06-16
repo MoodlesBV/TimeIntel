@@ -16,6 +16,10 @@ var locale = {
                     "keywords": ["uren", "uur", "u"],
                     "multiply": 3600
                 },
+                "days": {
+                    "keywords": ["dagen", "dag"],
+                    "multiply": 28800 // Technically 8 hours
+                }
             }
         },
         "duration": {
@@ -42,9 +46,13 @@ var locale = {
                     "multiply": 3600
                 },
                 "one-and-a-half-hour": {
-                    "keywords": ["anderhalve uren", "anderhalf uur"],
+                    "keywords": ["anderhalve uren", "anderhalf uur", "anderhalve", "anderhalf"],
                     "multiply": 5400
                 },
+                "days": {
+                    "keywords": ["dagen", "dag"],
+                    "multiply": 28800 // Technically 8 hours
+                }
             }
         }
     }
