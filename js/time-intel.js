@@ -73,10 +73,7 @@ TimeIntel.prototype.timeString = function() {
 };
 
 TimeIntel.prototype.regex = function(index, time) {
-    var combine  = '(' + this.prepRegex(locale.combine) + ')';
-
-    var keywordsArray = [],
-        regex;
+    var keywordsArray = [];
 
     for (var j in time.keywords) {
         keywordsArray.push('(' + this.prepRegex(time.keywords[j]) + ')');
@@ -84,32 +81,7 @@ TimeIntel.prototype.regex = function(index, time) {
 
     var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
 
-    if (index === 'periods') {
-        regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
-                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
-                '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+)|' +
-                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
-                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
-                '(\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
-                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
-                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
-                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
-                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+)|' +
-                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+\\d+)|' +
-                '(\\d+\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
-                '(\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
-                '(\\d+\\s+' + combine + '\\s+\\d+)|';
-    } else {
-        regex = '(\\d+:\\d+\\s+' + keywords + ')|' +
-                '(' + keywords + '\\s+\\d+:\\d+)|' +
-                '(\\d+:\\d+)|' +
-                '(\\d+\\s+' + keywords + ')|' +
-                '(' + keywords + '\\s+\\d+)|' +
-                '(\\d+)|' +
-                keywords + '|';
-    }
-
-    return new RegExp(regex.slice(0, -1), 'gi');
+    return this.generateRegex(index, keywords);
 };
 
 TimeIntel.prototype.times = function() {
@@ -158,11 +130,35 @@ TimeIntel.prototype.format = function(format) {
 
                 formatted[i] = this.getFormatted(format, duration);
             } else {
-                // TODO: Get the format from the string using regular
-                // expressions
-                console.log(times[i]);
+                var index,
+                    tmpValue,
+                    value;
 
-                formatted[i] = times[i][0];
+                for (var j in locale.time.periods.keywords) {
+                    var regex = this.prepRegex(locale.time.periods.keywords[j]);
+
+                    if (new RegExp(regex).test(times[i][0])) {
+                        index = j;
+                        tmpValue = times[i][0].match(/\d+/g);
+                    }
+                }
+
+                if (tmpValue !== null) {
+                    value = tmpValue.join();
+                }
+
+                if (typeof index === 'undefined') {
+                    index = 'hours';
+                }
+
+                var f = this.getFormat(index),
+                    s = moment(0, f),
+                    e = moment(value, f),
+                    d = moment.duration(e.diff(s));
+
+                    console.log(f, s.format('HH:mm'), e.format('HH:mm'));
+
+                formatted[i] = this.getFormatted(format, d);
             }
         }
     }
@@ -174,10 +170,43 @@ TimeIntel.prototype.prepRegex = function(input) {
     return input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-');
 };
 
+TimeIntel.prototype.generateRegex = function(index, keywords) {
+    console.log('TimeIntel.prototype.generateRegex(index, keywords);', [index, keywords]);
+
+    var combine  = '(' + this.prepRegex(locale.combine) + ')';
+
+    if (index === 'periods') {
+        regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(' + keywords + '\\s+\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+\\s+' + combine + '\\s+\\d+:\\d+)|' +
+                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
+                '(\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+)|' +
+                '(' + keywords + '\\s+\\d+\\s+' + combine + '\\s+\\d+)|' +
+                '(\\d+\\s+' + combine + '\\s+\\d+\\s+' + keywords + ')|' +
+                '(\\d+\\s+' + combine + '\\s+' + keywords + '\\s+\\d+)|' +
+                '(\\d+\\s+' + combine + '\\s+\\d+)|';
+    } else {
+        regex = '(\\d+:\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+:\\d+)|' +
+                '(\\d+:\\d+)|' +
+                '(\\d+\\s+' + keywords + ')|' +
+                '(' + keywords + '\\s+\\d+)|' +
+                '(\\d+)|' +
+                keywords + '|';
+    }
+
+    return new RegExp(regex.slice(0, -1), 'gi');
+};
+
 TimeIntel.prototype.sortLocaleByPriority = function() {
     var sortedLocale = {
-        "combine": locale.combine,
-        "time": {}
+        "combine" : locale.combine,
+        "time"    : {}
     };
 
     var sortedKeys = Object.keys(locale.time).sort(function(a, b) {
@@ -191,17 +220,29 @@ TimeIntel.prototype.sortLocaleByPriority = function() {
     locale = sortedLocale;
 };
 
+TimeIntel.prototype.getFormat = function(index) {
+    var format;
+
+    switch(index) {
+        case 'hours'   : format = 'HH:mm'; break;
+        case 'minutes' : format = 'mm'; break;
+        case 'seconds' : format = 'ss'; break;
+    }
+
+    return format;
+};
+
 TimeIntel.prototype.getFormatted = function(format, duration) {
     var formatted;
 
     switch(format) {
-        case 'ms': formatted = duration.asMilliseconds(); break;
-        case 's': formatted  = duration.asSeconds(); break;
-        case 'm': formatted  = duration.asMinutes(); break;
-        case 'h': formatted  = duration.asHours(); break;
-        case 'd': formatted  = duration.asDays(); break;
-        case 'm': formatted  = duration.asMonths(); break;
-        case 'y': formatted  = duration.asYears(); break;
+        case 'ms' : formatted = duration.asMilliseconds(); break;
+        case 's'  : formatted = duration.asSeconds(); break;
+        case 'm'  : formatted = duration.asMinutes(); break;
+        case 'h'  : formatted = duration.asHours(); break;
+        case 'd'  : formatted = duration.asDays(); break;
+        case 'm'  : formatted = duration.asMonths(); break;
+        case 'y'  : formatted = duration.asYears(); break;
         default: console.error('TimeIntel: Format not recognized.'); return;
     }
 
