@@ -52,25 +52,25 @@ TimeIntel.prototype.values = function() {
     return values;
 };
 
-TimeIntel.prototype.times = function() {
+TimeIntel.prototype.timeString = function() {
     this.sortLocaleByPriority();
 
-    var times = [];
+    var timeString = [];
 
     for (var i in locale.time) {
         var values = this.values(),
             regex  = this.regex(i, locale.time[i]);
 
         for (var j = 0; j < values.length; j++) {
-            times[j] = times[j] || null;
+            timeString[j] = timeString[j] || null;
 
-            if (values[j].match(regex) !== null && times[j] === null) {
-                times[j] = values[j].match(regex)[0];
+            if (values[j].match(regex) !== null && timeString[j] === null) {
+                timeString[j] = values[j].match(regex)[0];
             }
         }
     }
 
-    return times;
+    return timeString;
 };
 
 TimeIntel.prototype.regex = function(index, time) {
@@ -113,35 +113,27 @@ TimeIntel.prototype.regex = function(index, time) {
     return new RegExp(regex.slice(0, -1), 'gi');
 };
 
-TimeIntel.prototype.format = function() {
+TimeIntel.prototype.times = function() {
     var elements     = this.elements(),
-        times        = this.times(),
+        timeString   = this.timeString(),
         combineRegex = new RegExp('\\s+(?:' + this.prepRegex(locale.combine) + ')\\s+'),
-        tmp = [];
+        times        = [];
 
-    for (var i = 0; i < times.length; i++) {
-        var cont = true;
-
-        if (times[i] === null || typeof times[i] === 'undefined') {
-            cont = false;
-            tmp[i] = null;
-        }
-
-        if (cont) {
+    for (var i = 0; i < timeString.length; i++) {
+        if (timeString[i] === null || typeof timeString[i] === 'undefined') {
+            times[i] = null;
+        } else {
             // If regex succeeds, this means we can calculate the difference.
             // Else, it's just a time format.
-            if (combineRegex.test(times[i])) {
-                var asdf = times[i].split(combineRegex);
-
-                console.log(asdf, asdf.map(function(a) { return moment(a, 'HH:mm').format('HH:mm'); }));
+            if (combineRegex.test(timeString[i])) {
+                times[i] = timeString[i].split(combineRegex);
             } else {
-                console.log(times[i], moment(times[i], 'HH:mm').format('HH:mm'));
+                times[i] = [timeString[i]];
             }
-            // console.log(times[i], combineRegex.test(times[i]), times[i] === null ? null : times[i].split(combineRegex));
         }
     }
 
-    return tmp;
+    return times;
 };
 
 TimeIntel.prototype.prepRegex = function(input) {
