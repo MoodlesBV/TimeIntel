@@ -3,34 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>TimeIntel plugin</title>
-</head>
-<body>
-    <div>0: <span class="time-intel" data-id="test1">Van 9:00 uur tot 10:00 uur</span></div>
-    <div>1: <span class="time-intel" data-id="test2">Van 10:00 uur tot 11:00</span></div>
-    <div>2: <span class="time-intel" data-id="test3">Van 11:00 tot 12:00 uur</span></div>
-    <div>3: <span class="time-intel" data-id="test4">Van 12:00 tot 13:00</span></div>
-    <div>4: <span class="time-intel" data-id="test5">van 13 uur tot 14 uur</span></div>
-    <div>5: <span class="time-intel" data-id="test6">van 14 uur tot 15</span></div>
-    <div>6: <span class="time-intel" data-id="test7">van 15 tot 16 uur</span></div>
-    <div>7: <span class="time-intel" data-id="test8">Van 16 tot 17</span></div>
-    <div>8: <span class="time-intel" data-id="test9">Ik heb 8 uur gewerkt</span></div>
-    <div>9: <span class="time-intel" data-id="test10">Ik heb gewerkt</span></div>
-    <div>10: <span class="time-intel" data-id="test11">Ik heb 10 gewerkt</span></div>
-    <div>11: <span class="time-intel" data-id="test11">Ik heb 15 minuten gewerkt</span></div>
-    <div>12: <span class="time-intel" data-id="test11">Ik heb anderhalf uur gewerkt</span></div>
 
-    <!-- Scripts -->
     <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../js/time-intel.js"></script>
     <script src="../js/locale/nl.js"></script>
+</head>
+<body>
+    <div class="time-intel">Van 9:00 uur tot 09:30 uur</div>
+    <div class="time-intel">Van 9:30 uur tot 11:00</div>
+    <div class="time-intel">Van 11:00 tot 12:00 uur</div>
+    <div class="time-intel">Van 12:00 tot 13:00</div>
+    <div class="time-intel">van 13 uur tot 14 uur</div>
+    <div class="time-intel">van 14 uur tot 15</div>
+    <div class="time-intel">van 15 tot 16 uur</div>
+    <div class="time-intel">Van 16 tot 17</div>
+    <div class="time-intel">Ik heb 8 uur gewerkt</div>
+    <div class="time-intel">Ik heb gewerkt</div>
+    <div class="time-intel">Ik heb 10 gewerkt</div>
+    <div class="time-intel">Ik heb 15 minuten gewerkt</div>
+    <div class="time-intel">Ik heb anderhalf uur gewerkt</div>
+
+    <input type="text" class="time-intel-input">
+
     <script>
         var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
-        // console.log(timeIntel.elements());
-        // console.log(timeIntel.values());
-        // console.log(timeIntel.timeString());
-        // console.log(timeIntel.times());
         console.log(timeIntel.format('h'));
+
+        $(function() {
+            $('.time-intel-input').on('keyup', function() {
+                var timeIntelInput = new TimeIntel('.time-intel-input', { lang: 'nl' });
+
+                console.log(timeIntelInput.format('s'));
+            });
+        });
     </script>
 </body>
 </html>
