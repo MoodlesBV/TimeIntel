@@ -1,0 +1,21 @@
+{
+  "name": "time-intel",
+  "homepage": "https://github.com/AuditeMarlow/TimeIntel",
+  "description": "",
+  "main": "js/time-intel.js",
+  "moduleType": [],
+  "authors": [
+    "Niek den Breeje <n.j.den.breeje@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "moment": "^2.13.0"
+  }
+}
