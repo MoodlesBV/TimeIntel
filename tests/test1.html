@@ -24,20 +24,10 @@
     <div class="time-intel">Ik heb 15 minuten gewerkt</div>
     <div class="time-intel">Ik heb anderhalf uur gewerkt</div>
 
-    <input type="text" class="time-intel-input">
-
     <script>
         var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
         console.log(timeIntel.format('h'));
-
-        $(function() {
-            $('.time-intel-input').on('keyup', function() {
-                var timeIntelInput = new TimeIntel('.time-intel-input', { lang: 'nl' });
-
-                console.log(timeIntelInput.format('s'));
-            });
-        });
     </script>
 </body>
 </html>
