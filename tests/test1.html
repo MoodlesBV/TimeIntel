@@ -24,12 +24,9 @@
     <script src="../js/time-intel.js"></script>
     <script src="../js/locale/nl.js"></script>
     <script>
-        var intelClasses = new TimeIntel('.time-intel', { lang: 'nl' });
+        var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
-        console.log(intelClasses.times());
-
-        // TODO: Integrate this feature in the plugin.
-        console.log(moment('12 minutes', 'half an hour').format('HH:mm'));
+        console.log(timeIntel.format());
     </script>
 </body>
 </html>

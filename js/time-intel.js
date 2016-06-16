@@ -3,8 +3,8 @@ window.TimeIntel = function(selector, options) {
 
     if (!(this instanceof TimeIntel)) return new TimeIntel(selector, options);
 
-    if (typeof locale === 'undefined' || typeof locale !== 'object') { console.warn('TimeIntel: Locale not included.'); return false; }
-    if (typeof moment === 'undefined' || typeof moment !== 'function') { console.warn('TimeIntel: moment.js not included.'); return false; }
+    if (typeof locale === 'undefined' || typeof locale !== 'object') { console.error('TimeIntel: Locale not included.'); return; }
+    if (typeof moment === 'undefined' || typeof moment !== 'function') { console.error('TimeIntel: moment.js not included.'); return; }
 
     var defaults = {
         lang: 'en'
@@ -19,8 +19,7 @@ window.TimeIntel = function(selector, options) {
     for (var i in options) {
         if (typeof defaults[i] === 'undefined') {
             validOptions = false;
-            console.warn('The option "' + i + '" is not supported.');
-            return false;
+            console.warn('The option "' + i + '" is not supported.'); return;
         }
     }
 
@@ -136,6 +135,41 @@ TimeIntel.prototype.times = function() {
     return times;
 };
 
+TimeIntel.prototype.format = function(format) {
+    var formats   = ['s', 'm', 'h', 'd', 'w', 'm', 'y'],
+        times     = this.times(),
+        formatted = [];
+
+    format = format || 's';
+
+    if (formats.indexOf(format) < 0) {
+        console.error('TimeIntel: Format not supported.'); return;
+    }
+
+    for (var i = 0; i < times.length; i++) {
+        formatted[i] = null;
+
+        if (times[i] !== null) {
+            if (times[i].length > 1) {
+                // You can assume the format to be in hours here.
+                var start    = moment(times[i][0], 'HH:mm'),
+                    end      = moment(times[i][1], 'HH:mm'),
+                    duration = moment.duration(end.diff(start));
+
+                formatted[i] = this.getFormatted(format, duration);
+            } else {
+                // TODO: Get the format from the string using regular
+                // expressions
+                console.log(times[i]);
+
+                formatted[i] = times[i][0];
+            }
+        }
+    }
+
+    return formatted;
+};
+
 TimeIntel.prototype.prepRegex = function(input) {
     return input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-');
 };
@@ -155,4 +189,21 @@ TimeIntel.prototype.sortLocaleByPriority = function() {
     }
 
     locale = sortedLocale;
+};
+
+TimeIntel.prototype.getFormatted = function(format, duration) {
+    var formatted;
+
+    switch(format) {
+        case 'ms': formatted = duration.asMilliseconds(); break;
+        case 's': formatted  = duration.asSeconds(); break;
+        case 'm': formatted  = duration.asMinutes(); break;
+        case 'h': formatted  = duration.asHours(); break;
+        case 'd': formatted  = duration.asDays(); break;
+        case 'm': formatted  = duration.asMonths(); break;
+        case 'y': formatted  = duration.asYears(); break;
+        default: console.error('TimeIntel: Format not recognized.'); return;
+    }
+
+    return formatted;
 };
