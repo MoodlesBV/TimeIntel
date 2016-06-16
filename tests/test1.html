@@ -10,24 +10,68 @@
     <script src="../js/locale/nl.js"></script>
 </head>
 <body>
-    <div class="time-intel">Van 9:00 uur tot 09:30 uur</div>
-    <div class="time-intel">Van 9:30 uur tot 11:00</div>
-    <div class="time-intel">Van 11:00 tot 12:00 uur</div>
-    <div class="time-intel">Van 12:00 tot 13:00</div>
-    <div class="time-intel">van 13 uur tot 14 uur</div>
-    <div class="time-intel">van 14 uur tot 15</div>
-    <div class="time-intel">van 15 tot 16 uur</div>
-    <div class="time-intel">Van 16 tot 17</div>
-    <div class="time-intel">Ik heb 8 uur gewerkt</div>
-    <div class="time-intel">Ik heb gewerkt</div>
-    <div class="time-intel">Ik heb 10 gewerkt</div>
-    <div class="time-intel">Ik heb 15 minuten gewerkt</div>
-    <div class="time-intel">Ik heb anderhalf uur gewerkt</div>
+    <p>
+        <div class="time-intel">Van 9:00 uur tot 09:30 uur</div>
+        <div class="result0"></div>
+    </p>
+    <p>
+        <div class="time-intel">Van 9:30 uur tot 11:00</div>
+        <div class="result1"></div>
+    </p>
+    <p>
+        <div class="time-intel">Van 11:00 tot 12:00 uur</div>
+        <div class="result2"></div>
+    </p>
+    <p>
+        <div class="time-intel">Van 12:00 tot 13:00</div>
+        <div class="result3"></div>
+    </p>
+    <p>
+        <div class="time-intel">van 13 uur tot 14 uur</div>
+        <div class="result4"></div>
+    </p>
+    <p>
+        <div class="time-intel">van 14 uur tot 15</div>
+        <div class="result5"></div>
+    </p>
+    <p>
+        <div class="time-intel">van 15 tot 16 uur</div>
+        <div class="result6"></div>
+    </p>
+    <p>
+        <div class="time-intel">Van 16 tot 17</div>
+        <div class="result7"></div>
+    </p>
+    <p>
+        <div class="time-intel">Ik heb 8 uur gewerkt</div>
+        <div class="result8"></div>
+    </p>
+    <p>
+        <div class="time-intel">Ik heb gewerkt</div>
+        <div class="result9"></div>
+    </p>
+    <p>
+        <div class="time-intel">Ik heb 10 gewerkt</div>
+        <div class="result10"></div>
+    </p>
+    <p>
+        <div class="time-intel">Ik heb 15 minuten gewerkt</div>
+        <div class="result11"></div>
+    </p>
+    <p>
+        <div class="time-intel">Ik heb anderhalf uur gewerkt</div>
+        <div class="result12"></div>
+    </p>
 
     <script>
-        var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
+        var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' }),
+            result    = timeIntel.format('h');
 
-        console.log(timeIntel.format('h'));
+        $(function() {
+            for (var i = 0; i < result.length; i++) {
+                $('.result' + i).html(result[i]);
+            }
+        });
     </script>
 </body>
 </html>

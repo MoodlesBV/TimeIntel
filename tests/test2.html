@@ -7,7 +7,7 @@
     <script src="../bower_components/moment/moment.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../js/time-intel.js"></script>
-    <script src="../js/locale/en.js"></script>
+    <script src="../js/locale/nl.js"></script>
 </head>
 <body>
     <input type="text" class="time-intel-input">
@@ -17,7 +17,7 @@
     <script>
         $(function() {
             $('.time-intel-input').on('keyup', function() {
-                var timeIntel = new TimeIntel('.time-intel-input', { lang: 'en' }),
+                var timeIntel = new TimeIntel('.time-intel-input', { lang: 'nl' }),
                     formats = timeIntel.format('h');
 
                 $('.result').html(formats[0]);
