@@ -94,8 +94,6 @@ TimeIntel.prototype.times = function() {
         if (timeString[i] === null || typeof timeString[i] === 'undefined') {
             times[i] = null;
         } else {
-            // If regex succeeds, this means we can calculate the difference.
-            // Else, it's just a time format.
             if (combineRegex.test(timeString[i])) {
                 times[i] = timeString[i].split(combineRegex);
             } else {
@@ -194,10 +192,8 @@ TimeIntel.prototype.getFormattedDuration = function(time, format) {
         regex,
         match;
 
-    // Get number from time string
     var number = (time.match(/\d+/g) || ['1']).join();
 
-    // Get match from time string.
     for (var i in props) {
         regex = new RegExp('\\b' + this.prepRegex(props[i].keywords) + '\\b', 'i');
 
