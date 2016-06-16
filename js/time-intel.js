@@ -29,7 +29,7 @@ window.TimeIntel = function(selector, options) {
         }
     }
 
-    moment.locale(this.options.locale);
+    moment.locale(locale);
 };
 
 TimeIntel.prototype.elements = function() {
