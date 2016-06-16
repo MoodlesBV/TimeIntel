@@ -72,11 +72,11 @@ TimeIntel.prototype.timeString = function() {
     return timeString;
 };
 
-TimeIntel.prototype.regex = function(index, time) {
+TimeIntel.prototype.regex = function(index) {
     var keywordsArray = [];
 
-    for (var j in time.keywords) {
-        keywordsArray.push('(' + this.prepRegex(time.keywords[j]) + ')');
+    for (var j in locale.time[index].props) {
+        keywordsArray.push('(' + this.prepRegex(locale.time[index].props[j].keywords) + ')');
     }
 
     var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
@@ -107,6 +107,7 @@ TimeIntel.prototype.times = function() {
     return times;
 };
 
+// TODO: Rewrite this function, cuz it's a mess right now. Very inconsistent output.
 TimeIntel.prototype.format = function(format) {
     var formats   = ['s', 'm', 'h', 'd', 'w', 'm', 'y'],
         times     = this.times(),
@@ -134,10 +135,10 @@ TimeIntel.prototype.format = function(format) {
                     tmpValue,
                     value;
 
-                for (var j in locale.time.periods.keywords) {
-                    var regex = this.prepRegex(locale.time.periods.keywords[j]);
+                for (var j in locale.time.periods.props) {
+                    var regex = new RegExp('(\\b' + this.prepRegex(locale.time.periods.props[j].keywords) + '\\b)');
 
-                    if (new RegExp(regex).test(times[i][0])) {
+                    if (regex.test(times[i][0])) {
                         index = j;
                         tmpValue = times[i][0].match(/\d+/g);
                     }
@@ -156,8 +157,6 @@ TimeIntel.prototype.format = function(format) {
                     e = moment(value, f),
                     d = moment.duration(e.diff(s));
 
-                    console.log(f, s.format('HH:mm'), e.format('HH:mm'));
-
                 formatted[i] = this.getFormatted(format, d);
             }
         }
@@ -171,8 +170,6 @@ TimeIntel.prototype.prepRegex = function(input) {
 };
 
 TimeIntel.prototype.generateRegex = function(index, keywords) {
-    console.log('TimeIntel.prototype.generateRegex(index, keywords);', [index, keywords]);
-
     var combine  = '(' + this.prepRegex(locale.combine) + ')';
 
     if (index === 'periods') {

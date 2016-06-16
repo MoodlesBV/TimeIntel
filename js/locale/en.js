@@ -3,21 +3,48 @@ var locale = {
     "time": {
         "periods": {
             "priority": 1,
-            "keywords": {
-                "hours"   : ["hours", "o'clock", "hour", "h"],
-                "minutes" : ["minutes", "minute", "min", "m"],
-                "seconds" : ["seconds", "second", "sec", "s"]
+            "props": {
+                "seconds": {
+                    "keywords": ["seconds", "second", "sec", "s"],
+                    "multiply": 1
+                },
+                "minutes": {
+                    "keywords": ["minutes", "minute", "min", "m"],
+                    "multiply": 60
+                },
+                "hours": {
+                    "keywords": ["hours", "o'clock", "hour", "h"],
+                    "multiply": 3600
+                },
             }
         },
         "duration": {
             "priority": 2,
-            "keywords": {
-                "hours"               : ["hour", "hours", "h"],
-                "one-and-a-half-hour" : ["one and a half hour"],
-                "half-hours"          : ["half hours", "half an hour", "half hour", "halfhour"],
-                "quarter"             : ["quarters", "quarter"],
-                "minutes"             : ["minutes", "minute", "min", "m"],
-                "seconds"             : ["seconds", "second", "sec", "s"]
+            "props": {
+                "seconds": {
+                    "keywords": ["seconds", "second", "sec", "s"],
+                    "multiply": 1
+                },
+                "minutes": {
+                    "keywords": ["minutes", "minute", "min", "m"],
+                    "multiply": 60
+                },
+                "quarter": {
+                    "keywords": ["quarters", "quarter"],
+                    "multiply": 900
+                },
+                "half-hours": {
+                    "keywords": ["half hours", "half an hour", "half hour", "halfhour"],
+                    "multiply": 1800
+                },
+                "hours": {
+                    "keywords": ["hour", "hours", "h"],
+                    "multiply": 3600
+                },
+                "one-and-a-half-hour": {
+                    "keywords": ["one and a half hour"],
+                    "multiply": 5400
+                },
             }
         }
     }
