@@ -33,7 +33,7 @@ var locale = {
                     "keywords": ["minuten", "minuut", "min", "m"],
                     "multiply": 60
                 },
-                "quarter": {
+                "quarters": {
                     "keywords": ["kwartieren", "kwartier"],
                     "multiply": 900
                 },
@@ -45,7 +45,7 @@ var locale = {
                     "keywords": ["uren", "uur", "u"],
                     "multiply": 3600
                 },
-                "one-and-a-half-hour": {
+                "one-and-a-half-hours": {
                     "keywords": ["anderhalve uren", "anderhalf uur", "anderhalve", "anderhalf"],
                     "multiply": 5400
                 },
