@@ -1,7 +1,7 @@
 {
   "name": "time-intel",
-  "homepage": "https://github.com/AuditeMarlow/TimeIntel",
-  "description": "",
+  "homepage": "https://github.com/MoodlesBV/TimeIntel",
+  "description": "JavaScript plugin to scan pieces of text intelligently for times and durations.",
   "main": "js/time-intel.js",
   "moduleType": [],
   "authors": [
