@@ -67,7 +67,7 @@
         var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
         $(function() {
-            var result = timeIntel.getFormat('h');
+            var result = timeIntel.getFormattedDurations('h');
 
             for (var i = 0; i < result.length; i++) {
                 $('.result' + i).html(result[i]);

@@ -7,7 +7,8 @@ window.TimeIntel = function(selector, options) {
     if (typeof moment === 'undefined' || typeof moment !== 'function') { console.error('TimeIntel: moment.js not included.'); return; }
 
     var defaults = {
-        lang: 'en'
+        "lang"   : "en",
+        "format" : "s"
     };
 
     var validOptions = true;
@@ -29,6 +30,7 @@ window.TimeIntel = function(selector, options) {
         }
     }
 
+    this.sortLocaleByPriority();
     moment.locale(this.options.lang);
 };
 
@@ -51,25 +53,96 @@ TimeIntel.prototype.getValues = function() {
     return values;
 };
 
-TimeIntel.prototype.timeString = function() {
-    this.sortLocaleByPriority();
-
-    var timeString = [];
+TimeIntel.prototype.getDurations = function() {
+    var values    = this.getValues(),
+        durations = [];
 
     for (var i in locale.time) {
-        var values = this.getValues(),
-            regex  = this.getRegex(i, locale.time[i]);
+        var regex = this.getRegex(i, locale.time[i]);
 
         for (var j = 0; j < values.length; j++) {
-            timeString[j] = timeString[j] || null;
+            durations[j] = durations[j] || null;
 
-            if (values[j].match(regex) !== null && timeString[j] === null) {
-                timeString[j] = values[j].match(regex)[0];
+            if (values[j].match(regex) !== null && durations[j] === null) {
+                durations[j] = values[j].match(regex)[0];
             }
         }
     }
 
-    return timeString;
+    return durations;
+};
+
+TimeIntel.prototype.getFormattedDurations = function(format) {
+    if (typeof format !== 'undefined') this.setFormat(format);
+
+    var durations          = this.getDurations(),
+        regex              = new RegExp(this.prepareRegex(locale.combine), 'i'),
+        formattedDurations = [];
+
+    for (var i = 0; i < durations.length; i++) {
+        formattedDurations[i] = null;
+
+        if (typeof durations[i] === 'undefined' || durations[i] !== null) {
+            var formatted;
+
+            if (regex.test(durations[i])) {
+                formatted = this.getFormattedPeriod(durations[i]);
+            } else {
+                formatted = this.getFormattedPlain(durations[i]);
+            }
+
+            formattedDurations[i] = formatted;
+        }
+    }
+
+    return formattedDurations;
+};
+
+TimeIntel.prototype.getFormattedPeriod = function(duration) {
+    var regex = new RegExp('\\s+(?:' + this.prepareRegex(locale.combine) + ')\\s+', 'i'),
+        split = duration.split(regex),
+        start = moment(split[0], 'HH:mm'),
+        end   = moment(split[1], 'HH:mm');
+
+    if (start.diff(end) > 0) {
+        end.add(12, 'h');
+    }
+
+    var total = moment.duration(end.diff(start)).asSeconds();
+
+    return this.calculate(total);
+};
+
+TimeIntel.prototype.getFormattedPlain = function(duration) {
+    var props = locale.time.duration.props,
+        match;
+
+    var number = (duration.match(/\d+/g) || ['1']).join();
+
+    for (var i in props) {
+        var regex = new RegExp(this.prepareRegex(props[i].keywords), 'i');
+
+        if (regex.test(duration)) {
+            match = i;
+            break;
+        }
+    }
+
+    if (typeof match === 'undefined') {
+        match = 'hours';
+    }
+
+    var total = number * locale.time.duration.props[match].multiply;
+
+    return this.calculate(total);
+};
+
+TimeIntel.prototype.getFormat = function(format) {
+    return this.options.format;
+};
+
+TimeIntel.prototype.setFormat = function(format) {
+    this.options.format = format;
 };
 
 TimeIntel.prototype.getRegex = function(index) {
@@ -82,49 +155,6 @@ TimeIntel.prototype.getRegex = function(index) {
     var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join();
 
     return this.generateRegex(index, keywords);
-};
-
-TimeIntel.prototype.getTimes = function() {
-    var elements     = this.getElements(),
-        timeString   = this.timeString(),
-        combineRegex = new RegExp('\\s+(?:' + this.prepareRegex(locale.combine) + ')\\s+', 'i'),
-        times        = [];
-
-    for (var i = 0; i < timeString.length; i++) {
-        if (timeString[i] === null || typeof timeString[i] === 'undefined') {
-            times[i] = null;
-        } else {
-            if (combineRegex.test(timeString[i])) {
-                times[i] = timeString[i].split(combineRegex);
-            } else {
-                times[i] = [timeString[i]];
-            }
-        }
-    }
-
-    return times;
-};
-
-TimeIntel.prototype.getFormat = function(format) {
-    format = format || 's';
-
-    var times     = this.getTimes(),
-        formats   = ['ms', 's', 'm', 'h', 'd'],
-        formatted = [];
-
-    if (formats.indexOf(format) < 0) {
-        console.error('TimeIntel: Format not supported.'); return;
-    }
-
-    for (var i = 0; i < times.length; i++) {
-        formatted[i] = null;
-
-        if (times[i] !== null) {
-            formatted[i] = times[i].length > 1 ? this.getFormattedPeriod(times[i], format) : this.getFormattedDuration(times[i][0], format);
-        }
-    }
-
-    return formatted;
 };
 
 TimeIntel.prototype.prepareRegex = function(input) {
@@ -179,48 +209,10 @@ TimeIntel.prototype.sortLocaleByPriority = function() {
     locale = sortedLocale;
 };
 
-TimeIntel.prototype.getFormattedPeriod = function(times, format) {
-    var start = moment(times[0], 'HH:mm'),
-        end   = moment(times[1], 'HH:mm');
-
-    if (start.diff(end) > 0) {
-        end.add(12, 'h');
-    }
-
-    var total = moment.duration(end.diff(start)).asSeconds();
-
-    return this.calculate(total, format);
-};
-
-TimeIntel.prototype.getFormattedDuration = function(time, format) {
-    var props = locale.time.duration.props,
-        regex,
-        match;
-
-    var number = (time.match(/\d+/g) || ['1']).join();
-
-    for (var i in props) {
-        regex = new RegExp(this.prepareRegex(props[i].keywords), 'i');
-
-        if (regex.test(time)) {
-            match = i;
-            break;
-        }
-    }
-
-    if (typeof match === 'undefined') {
-        match = 'hours';
-    }
-
-    var total = number * locale.time.duration.props[match].multiply;
-
-    return this.calculate(total, format);
-};
-
-TimeIntel.prototype.calculate = function(total, format) {
+TimeIntel.prototype.calculate = function(total) {
     var formatted;
 
-    switch(format) {
+    switch(this.options.format) {
         case 'ms': formatted = total * 1000; break;
         case 's': formatted = total; break;
         case 'm': formatted = total / 60; break;
