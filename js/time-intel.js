@@ -79,7 +79,7 @@ TimeIntel.prototype.regex = function(index) {
         keywordsArray.push('(' + this.prepRegex(locale.time[index].props[j].keywords) + ')');
     }
 
-    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
+    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join();
 
     return this.generateRegex(index, keywords);
 };
@@ -108,8 +108,8 @@ TimeIntel.prototype.times = function() {
 TimeIntel.prototype.format = function(format) {
     format = format || 's';
 
-    var formats   = ['ms', 's', 'm', 'h', 'd'],
-        times     = this.times(),
+    var times     = this.times(),
+        formats   = ['ms', 's', 'm', 'h', 'd'],
         formatted = [];
 
     if (formats.indexOf(format) < 0) {
@@ -204,6 +204,7 @@ TimeIntel.prototype.getFormattedDuration = function(time, format) {
 
         if (regex.test(time)) {
             match = i;
+            break;
         }
     }
 

@@ -38,7 +38,7 @@ var locale = {
                     "multiply": 900
                 },
                 "half-hours": {
-                    "keywords": ["halve uren", "half uur", "halfuur"],
+                    "keywords": ["halve uren", "half uur", "halfuur", "half"],
                     "multiply": 1800
                 },
                 "hours": {
