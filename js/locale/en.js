@@ -57,6 +57,7 @@ var locale = {
         }
     },
     "words": {
+        "hundred": "hundred",
         "small": {
             "zero"      : 0,
             "one"       : 1,

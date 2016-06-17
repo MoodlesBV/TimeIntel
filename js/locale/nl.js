@@ -57,6 +57,7 @@ var locale = {
         }
     },
     "words": {
+        "hundred": "honderd",
         "small": {
             "nul"       : 0,
             "een"       : 1,
@@ -95,6 +96,6 @@ var locale = {
             "quadriljoen" : 1000000000000000,
             "triljoen"    : 1000000000000000000,
             "triljard"    : 1000000000000000000000,
-        }
+        },
     }
 };
