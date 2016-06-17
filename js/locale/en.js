@@ -33,19 +33,19 @@ var locale = {
                     "keywords": ["minutes", "minute", "min", "m"],
                     "multiply": 60
                 },
-                "quarter": {
+                "quarters": {
                     "keywords": ["quarters", "quarter"],
                     "multiply": 900
                 },
                 "half-hours": {
-                    "keywords": ["half hours", "half an hour", "half hour", "halfhour"],
+                    "keywords": ["half hours", "half an hour", "half hour", "halfhour", "half"],
                     "multiply": 1800
                 },
                 "hours": {
                     "keywords": ["hour", "hours", "h"],
                     "multiply": 3600
                 },
-                "one-and-a-half-hour": {
+                "one-and-a-half-hours": {
                     "keywords": ["one and a half hour", "one and a half"],
                     "multiply": 5400
                 },

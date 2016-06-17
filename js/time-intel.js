@@ -29,10 +29,10 @@ window.TimeIntel = function(selector, options) {
         }
     }
 
-    moment.locale(this.options.locale);
+    moment.locale(this.options.lang);
 };
 
-TimeIntel.prototype.elements = function() {
+TimeIntel.prototype.getElements = function() {
     if (this.selector.substring(0, 1) === '#') {
         return [document.getElementById(this.selector.substring(1))];
     }
@@ -40,8 +40,8 @@ TimeIntel.prototype.elements = function() {
     return document.getElementsByClassName(this.selector.substring(1));
 };
 
-TimeIntel.prototype.values = function() {
-    var elements = this.elements(),
+TimeIntel.prototype.getValues = function() {
+    var elements = this.getElements(),
         values   = [];
 
     for (var i = 0; i < elements.length; i++) {
@@ -57,8 +57,8 @@ TimeIntel.prototype.timeString = function() {
     var timeString = [];
 
     for (var i in locale.time) {
-        var values = this.values(),
-            regex  = this.regex(i, locale.time[i]);
+        var values = this.getValues(),
+            regex  = this.getRegex(i, locale.time[i]);
 
         for (var j = 0; j < values.length; j++) {
             timeString[j] = timeString[j] || null;
@@ -72,22 +72,22 @@ TimeIntel.prototype.timeString = function() {
     return timeString;
 };
 
-TimeIntel.prototype.regex = function(index) {
+TimeIntel.prototype.getRegex = function(index) {
     var keywordsArray = [];
 
     for (var j in locale.time[index].props) {
-        keywordsArray.push('(' + this.prepRegex(locale.time[index].props[j].keywords) + ')');
+        keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[j].keywords) + ')');
     }
 
-    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join('|');
+    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join();
 
     return this.generateRegex(index, keywords);
 };
 
-TimeIntel.prototype.times = function() {
-    var elements     = this.elements(),
+TimeIntel.prototype.getTimes = function() {
+    var elements     = this.getElements(),
         timeString   = this.timeString(),
-        combineRegex = new RegExp('\\s+(?:' + this.prepRegex(locale.combine) + ')\\s+', 'i'),
+        combineRegex = new RegExp('\\s+(?:' + this.prepareRegex(locale.combine) + ')\\s+', 'i'),
         times        = [];
 
     for (var i = 0; i < timeString.length; i++) {
@@ -105,11 +105,11 @@ TimeIntel.prototype.times = function() {
     return times;
 };
 
-TimeIntel.prototype.format = function(format) {
+TimeIntel.prototype.getFormat = function(format) {
     format = format || 's';
 
-    var formats   = ['ms', 's', 'm', 'h', 'd'],
-        times     = this.times(),
+    var times     = this.getTimes(),
+        formats   = ['ms', 's', 'm', 'h', 'd'],
         formatted = [];
 
     if (formats.indexOf(format) < 0) {
@@ -127,12 +127,12 @@ TimeIntel.prototype.format = function(format) {
     return formatted;
 };
 
-TimeIntel.prototype.prepRegex = function(input) {
-    return input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-');
+TimeIntel.prototype.prepareRegex = function(input) {
+    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
 };
 
 TimeIntel.prototype.generateRegex = function(index, keywords) {
-    var combine  = '(' + this.prepRegex(locale.combine) + ')';
+    var combine  = '(' + this.prepareRegex(locale.combine) + ')';
 
     if (index === 'periods') {
         regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
@@ -180,9 +180,14 @@ TimeIntel.prototype.sortLocaleByPriority = function() {
 };
 
 TimeIntel.prototype.getFormattedPeriod = function(times, format) {
-    var start = times[0],
-        end   = times[1],
-        total = moment.duration(moment(end, 'HH:mm').diff(moment(start, 'HH:mm'))).asSeconds();
+    var start = moment(times[0], 'HH:mm'),
+        end   = moment(times[1], 'HH:mm');
+
+    if (start.diff(end) > 0) {
+        end.add(12, 'h');
+    }
+
+    var total = moment.duration(end.diff(start)).asSeconds();
 
     return this.calculate(total, format);
 };
@@ -195,10 +200,11 @@ TimeIntel.prototype.getFormattedDuration = function(time, format) {
     var number = (time.match(/\d+/g) || ['1']).join();
 
     for (var i in props) {
-        regex = new RegExp('\\b' + this.prepRegex(props[i].keywords) + '\\b', 'i');
+        regex = new RegExp(this.prepareRegex(props[i].keywords), 'i');
 
         if (regex.test(time)) {
             match = i;
+            break;
         }
     }
 
