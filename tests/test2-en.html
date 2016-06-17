@@ -6,7 +6,7 @@
 
     <script src="../bower_components/moment/moment.js"></script>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../js/time-intel.js"></script>
+    <script src="../js/time-intel.min.js"></script>
     <script src="../js/locale/en.js"></script>
 </head>
 <body>
@@ -21,7 +21,7 @@
 
         $(function() {
             $('.time-intel-input').on('keyup', function() {
-                var formats = timeIntel.getFormat('h');
+                var formats = timeIntel.getFormattedDurations('h');
 
                 $('.result').html(formats[0]);
             });
