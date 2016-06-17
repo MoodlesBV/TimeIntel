@@ -195,7 +195,8 @@ TimeIntel.prototype.generateRegex = function(index, keywords) {
 TimeIntel.prototype.sortLocaleByPriority = function() {
     var sortedLocale = {
         "combine" : locale.combine,
-        "time"    : {}
+        "time"    : {},
+        "words"   : locale.words
     };
 
     var sortedKeys = Object.keys(locale.time).sort(function(a, b) {
