@@ -54,7 +54,7 @@ TimeIntel.prototype.getValues = function() {
 };
 
 TimeIntel.prototype.getDurations = function() {
-    var values    = this.getValues(),
+    var values    = this.text2num(this.getValues()),
         durations = [];
 
     for (var i in locale.time) {
@@ -148,21 +148,12 @@ TimeIntel.prototype.setFormat = function(format) {
 TimeIntel.prototype.getRegex = function(index) {
     var keywordsArray = [];
 
-    for (var j in locale.time[index].props) {
-        keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[j].keywords) + ')');
+    for (var i in locale.time[index].props) {
+        keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[i].keywords) + ')');
     }
 
-    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join();
-
-    return this.generateRegex(index, keywords);
-};
-
-TimeIntel.prototype.prepareRegex = function(input) {
-    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
-};
-
-TimeIntel.prototype.generateRegex = function(index, keywords) {
-    var combine  = '(' + this.prepareRegex(locale.combine) + ')';
+    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join(),
+        combine  = '(' + this.prepareRegex(locale.combine) + ')';
 
     if (index === 'periods') {
         regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
@@ -192,10 +183,15 @@ TimeIntel.prototype.generateRegex = function(index, keywords) {
     return new RegExp(regex.slice(0, -1), 'gi');
 };
 
+TimeIntel.prototype.prepareRegex = function(input) {
+    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
+};
+
 TimeIntel.prototype.sortLocaleByPriority = function() {
     var sortedLocale = {
         "combine" : locale.combine,
-        "time"    : {}
+        "time"    : {},
+        "words"   : locale.words
     };
 
     var sortedKeys = Object.keys(locale.time).sort(function(a, b) {
@@ -221,4 +217,36 @@ TimeIntel.prototype.calculate = function(total) {
     }
 
     return formatted;
+};
+
+TimeIntel.prototype.text2num = function(values) {
+    for (var i = 0; i < values.length; i++) {
+        var split = values[i].split(/[\s-]+/),
+            n     = 0,
+            g     = 0;
+
+        for (var j = 0; j < split.length; j++) {
+            var w = split[j].toLowerCase(),
+                x = locale.words.small[w];
+
+            console.log([w]);
+
+            if (typeof x !== 'undefined') {
+                g = g + x;
+            } else if (w === locale.words.hundred && g > 0) {
+                g = g * 100;
+            } else {
+                x = locale.words.magnitude[w];
+
+                if (typeof x !== 'undefined') {
+                    n = n + g * x;
+                    g = 0;
+                }
+            }
+        }
+
+        console.log(n + g);
+    }
+
+    return values;
 };
