@@ -17,10 +17,11 @@
     <div class="result"></div>
 
     <script>
+        var timeIntel = new TimeIntel('.time-intel-input', { lang: 'en' });
+
         $(function() {
             $('.time-intel-input').on('keyup', function() {
-                var timeIntel = new TimeIntel('.time-intel-input', { lang: 'en' }),
-                    formats = timeIntel.format('h');
+                var formats = timeIntel.format('h');
 
                 $('.result').html(formats[0]);
             });
