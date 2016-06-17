@@ -105,7 +105,7 @@ TimeIntel.prototype.getTimes = function() {
     return times;
 };
 
-TimeIntel.prototype.format = function(format) {
+TimeIntel.prototype.getFormat = function(format) {
     format = format || 's';
 
     var times     = this.getTimes(),
@@ -128,7 +128,7 @@ TimeIntel.prototype.format = function(format) {
 };
 
 TimeIntel.prototype.prepareRegex = function(input) {
-    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\//g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-') + '\\b';
+    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
 };
 
 TimeIntel.prototype.generateRegex = function(index, keywords) {
@@ -200,7 +200,7 @@ TimeIntel.prototype.getFormattedDuration = function(time, format) {
     var number = (time.match(/\d+/g) || ['1']).join();
 
     for (var i in props) {
-        regex = new RegExp('\\b' + this.prepareRegex(props[i].keywords) + '\\b', 'i');
+        regex = new RegExp(this.prepareRegex(props[i].keywords), 'i');
 
         if (regex.test(time)) {
             match = i;
