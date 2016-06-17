@@ -64,10 +64,11 @@
     </p>
 
     <script>
-        var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' }),
-            result    = timeIntel.getFormat('h');
+        var timeIntel = new TimeIntel('.time-intel', { lang: 'nl' });
 
         $(function() {
+            var result = timeIntel.getFormat('h');
+
             for (var i = 0; i < result.length; i++) {
                 $('.result' + i).html(result[i]);
             }
