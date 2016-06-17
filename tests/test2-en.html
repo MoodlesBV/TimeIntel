@@ -21,7 +21,7 @@
 
         $(function() {
             $('.time-intel-input').on('keyup', function() {
-                var formats = timeIntel.format('h');
+                var formats = timeIntel.getFormat('h');
 
                 $('.result').html(formats[0]);
             });
