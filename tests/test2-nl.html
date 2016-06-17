@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TimeIntel plugin</title>
+
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../js/time-intel.js"></script>
+    <script src="../js/locale/nl.js"></script>
+</head>
+<body>
+    <h1>Dutch input test</h1>
+
+    <input type="text" class="time-intel-input">
+
+    <div class="result"></div>
+
+    <script>
+        $(function() {
+            $('.time-intel-input').on('keyup', function() {
+                var timeIntel = new TimeIntel('.time-intel-input', { lang: 'nl' }),
+                    formats = timeIntel.format('h');
+
+                $('.result').html(formats[0]);
+            });
+        });
+    </script>
+</body>
+</html>
+
