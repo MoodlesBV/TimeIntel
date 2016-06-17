@@ -1,5 +1,5 @@
 var locale = {
-    "combine": ["-", "tot", "tot en met", "t/m", "t\\m"],
+    "combine": ["tot en met", "tot", "t/m", "t\\m", "-"],
     "time": {
         "periods": {
             "priority": 1,
@@ -41,13 +41,13 @@ var locale = {
                     "keywords": ["halve uren", "half uur", "halfuur", "half"],
                     "multiply": 1800
                 },
-                "hours": {
-                    "keywords": ["uren", "uur", "u"],
-                    "multiply": 3600
-                },
                 "one-and-a-half-hours": {
                     "keywords": ["anderhalve uren", "anderhalf uur", "anderhalve", "anderhalf"],
                     "multiply": 5400
+                },
+                "hours": {
+                    "keywords": ["uren", "uur", "u"],
+                    "multiply": 3600
                 },
                 "days": {
                     "keywords": ["dagen", "dag"],
