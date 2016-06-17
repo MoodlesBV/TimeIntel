@@ -152,17 +152,8 @@ TimeIntel.prototype.getRegex = function(index) {
         keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[j].keywords) + ')');
     }
 
-    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join();
-
-    return this.generateRegex(index, keywords);
-};
-
-TimeIntel.prototype.prepareRegex = function(input) {
-    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
-};
-
-TimeIntel.prototype.generateRegex = function(index, keywords) {
-    var combine  = '(' + this.prepareRegex(locale.combine) + ')';
+    var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join(),
+        combine  = '(' + this.prepareRegex(locale.combine) + ')';
 
     if (index === 'periods') {
         regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
@@ -190,6 +181,10 @@ TimeIntel.prototype.generateRegex = function(index, keywords) {
     }
 
     return new RegExp(regex.slice(0, -1), 'gi');
+};
+
+TimeIntel.prototype.prepareRegex = function(input) {
+    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
 };
 
 TimeIntel.prototype.sortLocaleByPriority = function() {
