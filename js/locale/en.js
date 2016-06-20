@@ -17,7 +17,7 @@ var locale = {
                     "multiply": 3600
                 },
                 "days": {
-                    "keywords": ["day", "days"],
+                    "keywords": ["days", "day"],
                     "multiply": 28800 // Technically 8 hours
                 }
             }
@@ -38,19 +38,23 @@ var locale = {
                     "multiply": 900
                 },
                 "half-hours": {
-                    "keywords": ["half hours", "half an hour", "half hour", "halfhour", "half"],
+                    "keywords": ["half hours", "halfhours", "half an hour", "half hour", "halfhour"],
                     "multiply": 1800
                 },
                 "one-and-a-half-hours": {
-                    "keywords": ["one and a half hour", "one and a half"],
+                    "keywords": ["one and a half hours", "one and a half hour"],
                     "multiply": 5400
                 },
                 "hours": {
-                    "keywords": ["hour", "hours", "h"],
+                    "keywords": ["hours", "hour", "h"],
                     "multiply": 3600
                 },
+                "half-days": {
+                    "keywords": ["half a day", "half day"],
+                    "multiply": 14400 // Technically 4 hours
+                },
                 "days": {
-                    "keywords": ["day", "days"],
+                    "keywords": ["days", "day"],
                     "multiply": 28800 // Technically 8 hours
                 }
             }
@@ -61,36 +65,36 @@ var locale = {
         "combine": "en",
         "zero": { "nul": 0 },
         "digits": {
-            "one"       : 1,
-            "two"      : 2,
-            "three"      : 3,
-            "four"      : 4,
-            "five"      : 5,
-            "six"       : 6,
-            "seven"     : 7,
-            "eight"      : 8,
-            "nine"     : 9
+            "one"   : 1,
+            "two"   : 2,
+            "three" : 3,
+            "four"  : 4,
+            "five"  : 5,
+            "six"   : 6,
+            "seven" : 7,
+            "eight" : 8,
+            "nine"  : 9
         },
         "tens": {
-            "ten"      : 10,
-            "eleven"       : 11,
+            "ten"       : 10,
+            "eleven"    : 11,
             "twelve"    : 12,
-            "thirteen"   : 13,
+            "thirteen"  : 13,
             "fourteen"  : 14,
-            "fifteen"  : 15,
+            "fifteen"   : 15,
             "sixteen"   : 16,
             "seventeen" : 17,
             "eighteen"  : 18,
-            "nineteen" : 19
+            "nineteen"  : 19
         },
         "doubles": {
-            "twenty"   : 20,
-            "thirty"    : 30,
+            "twenty"  : 20,
+            "thirty"  : 30,
             "forty"   : 40,
             "fifty"   : 50,
-            "sixty"    : 60,
-            "seventy"  : 70,
-            "eighty"   : 80,
+            "sixty"   : 60,
+            "seventy" : 70,
+            "eighty"  : 80,
             "ninety"  : 90
         }
     }

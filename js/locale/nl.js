@@ -9,15 +9,15 @@ var locale = {
                     "multiply": 1
                 },
                 "minutes": {
-                    "keywords": ["minuten", "minuut", "min", "m"],
+                    "keywords": ["minuten", "minuutjes", "minuutje", "minuut", "min", "m"],
                     "multiply": 60
                 },
                 "hours": {
-                    "keywords": ["uren", "uur", "u"],
+                    "keywords": ["uren", "uurtjes", "uurtje", "uur", "u"],
                     "multiply": 3600
                 },
                 "days": {
-                    "keywords": ["dagen", "dag"],
+                    "keywords": ["dagen", "dagjes", "dagje", "dag"],
                     "multiply": 28800 // Technically 8 hours
                 }
             }
@@ -30,27 +30,31 @@ var locale = {
                     "multiply": 1
                 },
                 "minutes": {
-                    "keywords": ["minuten", "minuut", "min", "m"],
+                    "keywords": ["minuten", "minuutjes", "minuutje", "minuut", "min", "m"],
                     "multiply": 60
                 },
                 "quarters": {
-                    "keywords": ["kwartieren", "kwartier"],
+                    "keywords": ["kwartieren", "kwartiertjes", "kwartiertje", "kwartier"],
                     "multiply": 900
                 },
                 "half-hours": {
-                    "keywords": ["halve uren", "half uur", "halfuur", "half"],
+                    "keywords": ["halve uren", "half uurtjes", "halfuurtjes", "half uurtje", "halfuurtje", "half uur", "halfuur"],
                     "multiply": 1800
                 },
                 "one-and-a-half-hours": {
-                    "keywords": ["anderhalve uren", "anderhalf uur", "anderhalve", "anderhalf"],
+                    "keywords": ["anderhalve uren", "anderhalve uurtjes", "anderhalf uurtje", "anderhalf uur"],
                     "multiply": 5400
                 },
                 "hours": {
-                    "keywords": ["uren", "uur", "u"],
+                    "keywords": ["uren", "uurtje", "uur", "u"],
                     "multiply": 3600
                 },
+                "half-days": {
+                    "keywords": ["halve dagen", "halve dagjes", "halve dag", "half dagje", "helft van de dag"],
+                    "multiply": 14400 // Technically 4 hours
+                },
                 "days": {
-                    "keywords": ["dagen", "dag"],
+                    "keywords": ["dagen", "dagjes", "dagje", "dag"],
                     "multiply": 28800 // Technically 8 hours
                 }
             }
@@ -61,15 +65,15 @@ var locale = {
         "combine": "en",
         "zero": { "nul": 0 },
         "digits": {
-            "een"       : 1,
-            "twee"      : 2,
-            "drie"      : 3,
-            "vier"      : 4,
-            "vijf"      : 5,
-            "zes"       : 6,
-            "zeven"     : 7,
-            "acht"      : 8,
-            "negen"     : 9
+            "een"   : 1,
+            "twee"  : 2,
+            "drie"  : 3,
+            "vier"  : 4,
+            "vijf"  : 5,
+            "zes"   : 6,
+            "zeven" : 7,
+            "acht"  : 8,
+            "negen" : 9
         },
         "tens": {
             "tien"      : 10,
@@ -84,14 +88,14 @@ var locale = {
             "negentien" : 19
         },
         "doubles": {
-            "twintig"   : 20,
-            "dertig"    : 30,
-            "veertig"   : 40,
-            "vijftig"   : 50,
-            "zestig"    : 60,
-            "zeventig"  : 70,
-            "tachtig"   : 80,
-            "negentig"  : 90
+            "twintig"  : 20,
+            "dertig"   : 30,
+            "veertig"  : 40,
+            "vijftig"  : 50,
+            "zestig"   : 60,
+            "zeventig" : 70,
+            "tachtig"  : 80,
+            "negentig" : 90
         }
     }
 };
