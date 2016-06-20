@@ -63,7 +63,7 @@ var locale = {
     "numbers": {
         "format": "[zero]|(\\b([digits]|[tens]|[doubles])\\b)|(\\b([doubles])([digits])\\b)",
         "combine": "and",
-        "zero": { "nul": 0 },
+        "zero": { "zero": 0 },
         "digits": {
             "one"   : 1,
             "two"   : 2,
