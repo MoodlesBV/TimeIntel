@@ -56,10 +56,11 @@ var locale = {
             }
         }
     },
-    "words": {
-        "hundred": "honderd",
-        "small": {
-            "nul"       : 0,
+    "numbers": {
+        "format": "[zero]|(\\b([digits]|[tens]|[doubles])\\b)|(\\b([digits])([combine])([doubles])\\b)",
+        "combine": "en",
+        "zero": { "nul": 0 },
+        "digits": {
             "een"       : 1,
             "twee"      : 2,
             "drie"      : 3,
@@ -68,7 +69,9 @@ var locale = {
             "zes"       : 6,
             "zeven"     : 7,
             "acht"      : 8,
-            "negen"     : 9,
+            "negen"     : 9
+        },
+        "tens": {
             "tien"      : 10,
             "elf"       : 11,
             "twaalf"    : 12,
@@ -78,7 +81,9 @@ var locale = {
             "zestien"   : 16,
             "zeventien" : 17,
             "achttien"  : 18,
-            "negentien" : 19,
+            "negentien" : 19
+        },
+        "doubles": {
             "twintig"   : 20,
             "dertig"    : 30,
             "veertig"   : 40,
@@ -86,16 +91,7 @@ var locale = {
             "zestig"    : 60,
             "zeventig"  : 70,
             "tachtig"   : 80,
-            "negentig"  : 90,
-        },
-        "magnitude": {
-            "duizend"     : 1000,
-            "miljoen"     : 1000000,
-            "miljard"     : 1000000000,
-            "biljoen"     : 1000000000000,
-            "quadriljoen" : 1000000000000000,
-            "triljoen"    : 1000000000000000000,
-            "triljard"    : 1000000000000000000000,
-        },
+            "negentig"  : 90
+        }
     }
 };
