@@ -76,7 +76,7 @@ TimeIntel.prototype.getFormattedDurations = function(format) {
     if (typeof format !== 'undefined') this.setFormat(format);
 
     var durations          = this.getDurations(),
-        regex              = new RegExp(this.prepareRegex(locale.combine), 'i'),
+        regex              = new RegExp(this.prepareRegex(locale.combine, '\\b'), 'i'),
         formattedDurations = [];
 
     for (var i = 0; i < durations.length; i++) {
@@ -99,7 +99,7 @@ TimeIntel.prototype.getFormattedDurations = function(format) {
 };
 
 TimeIntel.prototype.getFormattedPeriod = function(duration) {
-    var regex = new RegExp('\\s+(?:' + this.prepareRegex(locale.combine) + ')\\s+', 'i'),
+    var regex = new RegExp('\\s+(?:' + this.prepareRegex(locale.combine, '\\b') + ')\\s+', 'i'),
         split = duration.split(regex),
         start = moment(split[0], 'HH:mm'),
         end   = moment(split[1], 'HH:mm');
@@ -120,7 +120,7 @@ TimeIntel.prototype.getFormattedPlain = function(duration) {
     var number = (duration.match(/\d+/g) || ['1']).join();
 
     for (var i in props) {
-        var regex = new RegExp(this.prepareRegex(props[i].keywords), 'i');
+        var regex = new RegExp(this.prepareRegex(props[i].keywords, '\\b'), 'i');
 
         if (regex.test(duration)) {
             match = i;
@@ -149,11 +149,11 @@ TimeIntel.prototype.getRegex = function(index) {
     var keywordsArray = [];
 
     for (var i in locale.time[index].props) {
-        keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[i].keywords) + ')');
+        keywordsArray.push('(' + this.prepareRegex(locale.time[index].props[i].keywords, '\\b') + ')');
     }
 
     var keywords = keywordsArray.length > 1 ? '(' + keywordsArray.join('|') + ')' : keywordsArray.join(),
-        combine  = '(' + this.prepareRegex(locale.combine) + ')';
+        combine  = '(' + this.prepareRegex(locale.combine, '\\b') + ')';
 
     if (index === 'periods') {
         regex = '(\\d+:\\d+\\s+' + keywords + '\\s+' + combine + '\\s+\\d+:\\d+\\s+' + keywords + ')|' +
@@ -183,15 +183,19 @@ TimeIntel.prototype.getRegex = function(index) {
     return new RegExp(regex.slice(0, -1), 'gi');
 };
 
-TimeIntel.prototype.prepareRegex = function(input) {
-    return '\\b' + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, '\\b|\\b') + '\\b';
+TimeIntel.prototype.prepareRegex = function(input, wrap) {
+    if (typeof input !== 'object') { input = [input]; }
+
+    wrap = wrap || '';
+
+    return wrap + input.join('|').replace(/\\/g, '\\\\').replace(/\b\/\b/g, '\\/').replace(/\s+/g, '\\s+').replace(/-/g, '\\-').replace(/\|/g, wrap + '|' + wrap) + wrap;
 };
 
 TimeIntel.prototype.sortLocaleByPriority = function() {
     var sortedLocale = {
         "combine" : locale.combine,
         "time"    : {},
-        "words"   : locale.words
+        "numbers" : locale.numbers
     };
 
     var sortedKeys = Object.keys(locale.time).sort(function(a, b) {
@@ -209,43 +213,77 @@ TimeIntel.prototype.calculate = function(total) {
     var formatted;
 
     switch(this.options.format) {
-        case 'ms': formatted = total * 1000; break;
-        case 's': formatted = total; break;
-        case 'm': formatted = total / 60; break;
-        case 'h': formatted = total / 3600; break;
-        case 'd': formatted = total / 86400; break;
+        case 'ms' : formatted = total * 1000  ; break;
+        case 's'  : formatted = total         ; break;
+        case 'm'  : formatted = total / 60    ; break;
+        case 'h'  : formatted = total / 3600  ; break;
+        case 'd'  : formatted = total / 86400 ; break;
     }
 
     return formatted;
 };
 
 TimeIntel.prototype.text2num = function(values) {
+    if (typeof values !== 'object') {
+        values = [values];
+    }
+
+    var zero     = this.prepareRegex(Object.keys(locale.numbers.zero), '\\b'),
+        digits   = this.prepareRegex(Object.keys(locale.numbers.digits)),
+        tens     = this.prepareRegex(Object.keys(locale.numbers.tens)),
+        doubles  = this.prepareRegex(Object.keys(locale.numbers.doubles)),
+        combine  = this.prepareRegex(locale.numbers.combine);
+
+    var zeroRegex     = new RegExp(zero, 'gi'),
+        digitsRegex   = new RegExp(digits, 'gi'),
+        tensRegex     = new RegExp(tens, 'gi'),
+        doublesRegex  = new RegExp(doubles, 'gi');
+
+    var formatRegex = new RegExp(locale.numbers.format
+        .replace(/\[zero\]/g, zero)
+        .replace(/\[digits\]/g, digits)
+        .replace(/\[tens\]/g, tens)
+        .replace(/\[doubles\]/g, doubles)
+        .replace(/\[combine\]/g, combine), 'i');
+
     for (var i = 0; i < values.length; i++) {
-        var split = values[i].split(/[\s-]+/),
-            n     = 0,
-            g     = 0;
+        var split = values[i].split(/[\s-]+/);
 
         for (var j = 0; j < split.length; j++) {
-            var w = split[j].toLowerCase(),
-                x = locale.words.small[w];
+            if (formatRegex.test(split[j])) {
+                if (zeroRegex.test(split[j])) {
+                    values[i] = values[i].replace(split[j], locale.numbers.zero[split[j]]);
+                } else {
+                    var total = 0;
 
-            console.log([w]);
+                    if (tensRegex.test(split[j])) {
+                        total += locale.numbers.tens[split[j]];
+                    } else {
+                        var double = split[j].match(doublesRegex) ? split[j].match(doublesRegex)[0] : null;
 
-            if (typeof x !== 'undefined') {
-                g = g + x;
-            } else if (w === locale.words.hundred && g > 0) {
-                g = g * 100;
-            } else {
-                x = locale.words.magnitude[w];
+                        if (double !== null) {
+                            split[j] = split[j].replace(double, '');
+                            total += locale.numbers.doubles[double];
+                        }
 
-                if (typeof x !== 'undefined') {
-                    n = n + g * x;
-                    g = 0;
+                        var ten = split[j].match(tensRegex) ? split[j].match(tensRegex)[0] : null;
+
+                        if (ten !== null && double !== split[j]) {
+                            split[j] = split[j].replace(ten, '');
+                            total += locale.numbers.tens[ten];
+                        }
+
+                        var digit = split[j].match(digitsRegex) ? split[j].match(digitsRegex)[0] : null;
+
+                        if (digit !== null && double !== split[j] && ten !== split[j]) {
+                            total += locale.numbers.digits[digit];
+                        }
+                    }
+
+                    values[i] = values[i].replace(split[j], total);
                 }
             }
         }
-
-        console.log(n + g);
     }
 
     return values;
