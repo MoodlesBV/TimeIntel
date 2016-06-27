@@ -252,31 +252,31 @@ TimeIntel.prototype.text2num = function(values) {
         for (var j = 0; j < split.length; j++) {
             if (formatRegex.test(split[j])) {
                 if (zeroRegex.test(split[j])) {
-                    values[i] = values[i].replace(split[j], locale.numbers.zero[split[j]]);
+                    values[i] = values[i].replace(split[j], locale.numbers.zero[split[j].toLowerCase()]);
                 } else {
                     var total = 0;
 
                     if (tensRegex.test(split[j])) {
-                        total += locale.numbers.tens[split[j]];
+                        total += locale.numbers.tens[split[j].toLowerCase()];
                     } else {
                         var double = split[j].match(doublesRegex) ? split[j].match(doublesRegex)[0] : null;
 
                         if (double !== null) {
                             split[j] = split[j].replace(double, '');
-                            total += locale.numbers.doubles[double];
+                            total += locale.numbers.doubles[double.toLowerCase()];
                         }
 
                         var ten = split[j].match(tensRegex) ? split[j].match(tensRegex)[0] : null;
 
                         if (ten !== null && double !== split[j]) {
                             split[j] = split[j].replace(ten, '');
-                            total += locale.numbers.tens[ten];
+                            total += locale.numbers.tens[ten.toLowerCase()];
                         }
 
                         var digit = split[j].match(digitsRegex) ? split[j].match(digitsRegex)[0] : null;
 
                         if (digit !== null && double !== split[j] && ten !== split[j]) {
-                            total += locale.numbers.digits[digit];
+                            total += locale.numbers.digits[digit.toLowerCase()];
                         }
                     }
 
