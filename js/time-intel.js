@@ -175,9 +175,7 @@ TimeIntel.prototype.getRegex = function(index) {
                 '(' + keywords + '\\s+\\d+:\\d+)|' +
                 '(\\d+:\\d+)|' +
                 '(\\d+\\s+' + keywords + ')|' +
-                '(' + keywords + '\\s+\\d+)|' +
-                '(\\d+)|' +
-                keywords + '|';
+                '(' + keywords + '\\s+\\d+)|';
     }
 
     return new RegExp(regex.slice(0, -1), 'gi');
