@@ -12,15 +12,15 @@
 <body>
     <h1>English input test</h1>
 
-    <input type="text" class="time-intel-input">
+    <input type="text" id="time-intel-input">
 
     <div class="result"></div>
 
     <script>
-        var timeIntel = new TimeIntel('.time-intel-input', { lang: 'en' });
+        var timeIntel = new TimeIntel('#time-intel-input', { lang: 'en' });
 
         $(function() {
-            $('.time-intel-input').on('keyup', function() {
+            $('#time-intel-input').on('keyup', function() {
                 var formats = timeIntel.getFormattedDurations('h');
 
                 $('.result').html(formats[0]);
