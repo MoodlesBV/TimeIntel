@@ -15,7 +15,14 @@ window.TimeIntel = function(selector, options) {
 
     options       = options  || {};
     this.selector = selector || null;
-    this.options  = {};
+
+    if (this.selector.substring(0, 1) === '#') {
+        this.elements = [document.getElementById(this.selector.substring(1))];
+    } else {
+        this.elements = [].slice.call(document.getElementsByClassName(this.selector.substring(1)));
+    }
+
+    this.options = {};
 
     for (var i in options) {
         if (typeof defaults[i] === 'undefined') {
@@ -35,11 +42,15 @@ window.TimeIntel = function(selector, options) {
 };
 
 TimeIntel.prototype.getElements = function() {
-    if (this.selector.substring(0, 1) === '#') {
-        return [document.getElementById(this.selector.substring(1))];
-    }
+    return this.elements;
+};
 
-    return document.getElementsByClassName(this.selector.substring(1));
+TimeIntel.prototype.removeElement = function(el) {
+    var index = this.elements.indexOf(el);
+
+    if (index > -1) {
+        this.elements.splice(index, 1);
+    }
 };
 
 TimeIntel.prototype.getValues = function() {
