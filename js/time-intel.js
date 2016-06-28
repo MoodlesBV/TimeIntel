@@ -45,6 +45,10 @@ TimeIntel.prototype.getElements = function() {
     return this.elements;
 };
 
+TimeIntel.prototype.addElement = function(el) {
+    this.elements.push(el);
+};
+
 TimeIntel.prototype.removeElement = function(el) {
     var index = this.elements.indexOf(el);
 
