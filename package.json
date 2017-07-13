@@ -1,0 +1,22 @@
+{
+  "name": "timeintel",
+  "version": "1.0.0",
+  "description": "JavaScript plugin to scan pieces of text intelligently for times and durations.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/MoodlesBV/TimeIntel.git"
+  },
+  "author": "Niek den Breeje",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoodlesBV/TimeIntel/issues"
+  },
+  "homepage": "https://github.com/MoodlesBV/TimeIntel#readme"
+}
